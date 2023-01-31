@@ -27,7 +27,7 @@ class MyDB:
         except mysql.connector.Error as err:
             print("Could not login to host with user/password provided.")
             print("Exiting.")
-            exit
+            exit()
 
     def add_or_change_a_word(self):
         word = input("What word do you want to add/change: ")
