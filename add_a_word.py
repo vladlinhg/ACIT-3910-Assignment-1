@@ -34,9 +34,10 @@ class MyDB:
         sql = "SELECT * FROM dictionary.word WHERE word = %s"
         entry = (word, )
         self.cursor.execute(sql, entry)
+        self.cursor.fetchall()
         if self.cursor.rowcount == 0:
             print("The word '" + word +"' was not found... adding")
-            sql = "INSERT INTO dictrionary.word (word) VALUES (%s)"
+            sql = "INSERT INTO dictionary.word (word) VALUES (%s)"
             entry = (word, )
             self.cursor.execute(sql, entry)
             self.db.commit()
@@ -46,12 +47,18 @@ class MyDB:
             result = self.cursor.fetchall()
             for row in result:
                 print(row)
-            
+            change = input("Change '" + word +"' to: ")
+            sql = "UPDATE dictionary.word SET word = %s WHERE word = %s"
+            entry = (change, word)
+            self.cursor.execute(sql, entry)
+            self.db.commit()
+            print("Changed '" + word +"' to '" + change +"' in the database")
 
 
 def main():
     db = Database()
     mydb = MyDB(db)
+    mydb.add_or_change_a_word()
 
 if __name__ == "__main__":
     main()
