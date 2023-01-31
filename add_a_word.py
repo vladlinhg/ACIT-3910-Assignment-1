@@ -22,23 +22,38 @@ class MyDB:
             for row in myresult:
                 print(row)
             self.db = res
+            self.cursor = self.db.cursor()
         
         except mysql.connector.Error as err:
             print("Could not login to host with user/password provided.")
             print("Exiting.")
             exit
+
     def add_or_change_a_word(self):
         word = input("What word do you want to add/change: ")
-        sql = ""
-        self.db.cursor
+        sql = "SELECT * FROM dictionary.word WHERE word = %s"
+        entry = (word, )
+        self.cursor.execute(sql, entry)
+        if self.cursor.rowcount == 0:
+            print("The word '" + word +"' was not found... adding")
+            sql = "INSERT INTO dictrionary.word (word) VALUES (%s)"
+            entry = (word, )
+            self.cursor.execute(sql, entry)
+            self.db.commit()
+            print("Added '" + word + "' to the database")
+        else:
+            print("Found '" + word +"' in the database")
+            result = self.cursor.fetchall()
+            for row in result:
+                print(row)
+            
 
 
+def main():
+    db = Database()
+    mydb = MyDB(db)
 
-
-
-
-
-db = Database()
-mydb = MyDB(db)
+if __name__ == "__main__":
+    main()
 
 
