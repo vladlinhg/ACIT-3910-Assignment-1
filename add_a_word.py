@@ -24,7 +24,8 @@ class MyDB:
             res = mysql.connector.connect(
                 host=str(db.hostname),
                 user=str(db.user),
-                password=str(db.password)
+                password=str(db.password),
+                auth_plugin="mysql_native_password"
             )
             print("Connect successfully.")
             mycursor = res.cursor()
